@@ -33,7 +33,7 @@ public class Server {
       try (
           BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
           PrintWriter out = new PrintWriter(socket.getOutputStream(), true);) {
-        out.println("Welcome, please enter you CYPHER to access:<user>:<password>");
+        out.println("Welcome, please enter you LOGIN to access:<user>:<password>");
         String line;
 
         while ((line = in.readLine()) != null) {
@@ -41,7 +41,7 @@ public class Server {
             String[] parts = line.split(":");
             if (parts.length == 3 && users.containsKey(parts[1]) && users.get(parts[1]).equals(parts[2])) {
               authenticated = true;
-              out.println("OK: successfully logged in");
+              out.println("OK: access granted");
             } else {
               out.println("ERROR: Invalid login");
             }
@@ -64,6 +64,10 @@ public class Server {
             Set<String> keys = data.keySet();
             out.println("LIST:" + String.join(", ", keys));
           } else if (line.equals("HELP")) {
+            if (!authenticated) {
+              out.println("unauthenticated");
+              continue;
+            }
             out.println("List of commands: ");
             out.println("- LOGIN:<usuario>:<senha> -> auth");
             out.println("- GET_INFO:<usuario> → Show data");
