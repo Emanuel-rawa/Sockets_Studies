@@ -10,14 +10,26 @@ public class Client {
     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
     Scanner scanner = new Scanner(System.in);
 
+    // Mensagem inicial do servidor
     System.out.println(in.readLine());
 
     while (true) {
       System.out.print("Enter command: ");
       String request = scanner.nextLine();
       out.println(request);
-      String response = in.readLine();
-      System.out.println("Server: " + response);
+
+      if (request.equals("HELP")) {
+        String responseLine;
+        while ((responseLine = in.readLine()) != null) {
+          if (responseLine.equals("END"))
+            break;
+          System.out.println("Server: " + responseLine);
+        }
+      } else {
+        String response = in.readLine();
+        System.out.println("Server: " + response);
+      }
+
       if (request.equals("LOGOUT"))
         break;
     }

@@ -64,16 +64,13 @@ public class Server {
             Set<String> keys = data.keySet();
             out.println("LIST:" + String.join(", ", keys));
           } else if (line.equals("HELP")) {
-            if (!authenticated) {
-              out.println("unauthenticated");
-              continue;
-            }
             out.println("List of commands: ");
             out.println("- LOGIN:<usuario>:<senha> -> auth");
             out.println("- GET_INFO:<usuario> → Show data");
             out.println("- LIST_KEYS → List keys for data");
             out.println("- LOGOUT → End session");
             out.println("- HELP → Show this commands");
+            out.println("END");
           } else {
             out.println("ERROR: Invalid command");
           }
